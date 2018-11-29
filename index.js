@@ -2,7 +2,7 @@
 if (typeof AFRAME === 'undefined') {
   throw new Error(
     'Component attempted to register before AFRAME was available.'
-  );
+  )
 }
 
 /**
@@ -29,7 +29,7 @@ AFRAME.registerComponent('custom-cubemap', {
     },
     formatRGBA: {
       type: 'boolean',
-      default: true,
+      default: false,
     },
     stereo: {
       type: 'string',
@@ -54,76 +54,76 @@ AFRAME.registerComponent('custom-cubemap', {
   },
 
   init() {
-    this.onEnterVr = this.onEnterVr.bind(this);
-    this.onExitVr = this.onExitVr.bind(this);
-    this.setStereoLayer = this.setStereoLayer.bind(this);
+    this.onEnterVr = this.onEnterVr.bind(this)
+    this.onExitVr = this.onExitVr.bind(this)
+    this.setStereoLayer = this.setStereoLayer.bind(this)
   },
 
   update() {
-    const data = this.data;
+    const data = this.data
 
     // determine local vs api as source for cubemap images
     if (data.folder !== '') {
-      cubemap = this.loadCubemapTexture(data.localSrcUrls, data.folder);
-      return this.createSkyBox(cubemap);
+      cubemap = this.loadCubemapTexture(data.localSrcUrls, data.folder)
+      return this.createSkyBox(cubemap)
     }
 
     if (data.vif !== '') {
-      let response = this.fetchData();
-      response.then(rawData => this.sortAndFilterImages(rawData));
+      let response = this.fetchData()
+      response.then(rawData => this.sortAndFilterImages(rawData))
     }
   },
 
   play() {
-    this.addEventListeners();
+    this.addEventListeners()
   },
 
   remove() {
-    this.removeEventListeners();
-    this.el.removeObject3D('cubemap');
+    this.removeEventListeners()
+    this.el.removeObject3D('cubemap')
   },
 
   onEnterVr() {
-    this.setStereoLayer('inVrMode');
+    this.setStereoLayer('inVrMode')
   },
 
   onExitVr() {
-    this.setStereoLayer('outVrMode');
+    this.setStereoLayer('outVrMode')
   },
 
   addEventListeners() {
-    const canvasEl = document.querySelector('a-scene');
+    const canvasEl = document.querySelector('a-scene')
     if (canvasEl) {
-      canvasEl.addEventListener('enter-vr', this.onEnterVr, false);
-      canvasEl.addEventListener('exit-vr', this.onExitVr, false);
+      canvasEl.addEventListener('enter-vr', this.onEnterVr, false)
+      canvasEl.addEventListener('exit-vr', this.onExitVr, false)
     }
   },
 
   removeEventListeners() {
-    const canvasEl = document.querySelector('a-scene');
+    const canvasEl = document.querySelector('a-scene')
     if (canvasEl) {
-      canvasEl.removeEventListener('enter-vr', this.onEnterVr);
-      canvasEl.removeEventListener('exit-vr', this.onExitVr);
+      canvasEl.removeEventListener('enter-vr', this.onEnterVr)
+      canvasEl.removeEventListener('exit-vr', this.onExitVr)
     }
   },
 
   setStereoLayer(mode) {
-    const data = this.data;
-    const obj3D = this.el.object3D.children[0];
+    const data = this.data
+    const obj3D = this.el.object3D.children[0]
 
     if (data.stereo === 'both' || data.stereo === 'left') {
-      obj3D.layers.set(0);
+      obj3D.layers.set(0)
     } else if (data.stereo === 'right') {
-      obj3D.layers.set(2);
+      obj3D.layers.set(2)
     }
 
     if (mode === 'inVrMode' && data.stereo === 'left') {
-      obj3D.layers.set(1);
+      obj3D.layers.set(1)
     }
   },
 
   createSkyBox(cubemap) {
-    const shader = THREE.ShaderLib.cube;
+    const shader = THREE.ShaderLib.cube
 
     // Create shader material
     const skyBoxShader = new THREE.ShaderMaterial({
@@ -133,46 +133,44 @@ AFRAME.registerComponent('custom-cubemap', {
       uniforms: shader.uniforms,
       side: THREE.BackSide,
       depthWrite: false,
-    });
+    })
 
     // Clone ShaderMaterial (necessary for multiple cubemaps)
-    const skyBoxMaterial = skyBoxShader.clone();
+    const skyBoxMaterial = skyBoxShader.clone()
 
     // Apply cubemap textures to shader uniforms
-    skyBoxMaterial.uniforms.tCube.value = cubemap;
+    skyBoxMaterial.uniforms.tCube.value = cubemap
 
     // Set skybox dimensions
-    const edgeLength = this.data.edgeLength;
+    const edgeLength = this.data.edgeLength
     const skyBoxGeometry = new THREE.CubeGeometry(
       edgeLength,
       edgeLength,
       edgeLength
-    );
+    )
 
     // Set entity's object3D
     this.el.setObject3D(
       'cubemap',
       new THREE.Mesh(skyBoxGeometry, skyBoxMaterial)
-    );
+    )
   },
 
   loadCubemapTexture(urls, path) {
-    const loader = new THREE.CubeTextureLoader();
+    const loader = new THREE.CubeTextureLoader()
     if (path !== '') {
-      loader.setPath(path);
+      loader.setPath(path)
     }
-    return loader.load(urls);
+    return loader.load(urls)
   },
 
   sortAndFilterImages(jsonData) {
-    let proxy = 'https://cors-anywhere.herokuapp.com/';
-    let filteredArray = [];
-    let sortedArray = [];
-    let imgUrls;
-    filteredArray = jsonData.urls.filter(url =>
-      RegExp(this.data.eye).test(url)
-    );
-    sortedArray = filteredArray.sort();
+    let proxy = 'https://cors-anywhere.herokuapp.com/'
+    let filteredArray = []
+    let sortedArray = []
+    let imgUrls
+    filteredArray = jsonData.urls.filter(url => RegExp(this.data.eye).test(url))
+    sortedArray = filteredArray.sort()
 
     // THREE.js loader array img order
     imgUrls = [
@@ -182,9 +180,15 @@ AFRAME.registerComponent('custom-cubemap', {
       proxy + sortedArray[5], // bottom
       proxy + sortedArray[0], // front
       proxy + sortedArray[2], // back
-    ];
-    let cubemap = this.loadCubemapTexture(imgUrls, '');
-    this.createSkyBox(cubemap);
+    ]
+    let cubemap = this.loadCubemapTexture(imgUrls, '')
+
+    // format rgba for png transparency
+    this.data.formatRGBA
+      ? (cubemap.format = THREE.RGBAFormat)
+      : (cubemap.format = THREE.RGBFormat)
+
+    this.createSkyBox(cubemap)
   },
 
   async fetchData() {
@@ -194,15 +198,15 @@ AFRAME.registerComponent('custom-cubemap', {
       product: '/products/14/134',
       base:
         'http://vehicles-api-dev.us-west-2.elasticbeanstalk.com/api/v1/vehicles/',
-    };
+    }
 
-    const fetchUrl = opt.base + opt.vif + opt.product + opt.apiKey;
+    const fetchUrl = opt.base + opt.vif + opt.product + opt.apiKey
 
     return await fetch(fetchUrl)
       .then(this.handleErrors)
       .then(response => response.json())
       .catch(function(error) {
-        console.log(error);
-      });
+        console.log(error)
+      })
   },
-});
+})
