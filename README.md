@@ -23,6 +23,7 @@ For [A-Frame](https://aframe.io).
 | vif          | Vehicle vifnum *API use only                                            | none                                                     |                     |
 | key          | API key **API use only                                                  | none                                                     |                     |
 | localSrcUrls | Local image naming scheme that maps to the skybox. **Order is important | `['1.png', '3.png', '4.png', '5.png', '0.png', '2.png']` |                     |
+| background   | Set as true if cubemap is used for background                           | false                                                    |
 
 ### Installation
 
@@ -43,6 +44,7 @@ Install and use by directly including the [browser files](dist):
 <body>
   <a-scene rotation="0 180 0" vr-mode-ui="enabled: false">
     <a-entity custom-cubemap="folder:AIL13225_pavr;transparent:true;"></a-entity>
+    <a-entity custom-cubemap="folder:showroom_int;background:true;"></a-entity>
   </a-scene>
 </body>
 ```
