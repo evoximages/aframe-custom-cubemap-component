@@ -99,6 +99,10 @@ AFRAME.registerComponent('custom-cubemap', {
       type: 'boolean',
       default: false
     },
+    background: {
+      type: 'boolean',
+      default: false
+    },
     formatRGBA: {
       type: 'boolean',
       default: false
@@ -179,12 +183,18 @@ AFRAME.registerComponent('custom-cubemap', {
   },
 
   loadCubemapTexture(folderPath) {
-    const eye = this.data.eye;
     const loader = new THREE.CubeTextureLoader();
     // url order matters for textureloader to place images on correct cube face
     const urls = ['1.png', '3.png', '4.png', '5.png', '0.png', '2.png'];
     const path = folderPath || '';
-    const formattedUrls = urls.map(url => `${folderPath}${eye}${url}`);
+    let formattedUrls = [];
+
+    if (this.data.background) {
+      return loader.setPath(path + '/').load(urls);
+    }
+
+    const eye = this.data.eye;
+    formattedUrls = urls.map(url => `${folderPath}${eye}${url}`);
     return loader.setPath(path + '/').load(formattedUrls);
   },
 
