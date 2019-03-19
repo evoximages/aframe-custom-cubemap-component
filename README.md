@@ -41,8 +41,8 @@ Install and use by directly including the [browser files](dist):
 </head>
 
 <body>
-  <a-scene rotation="0 180 0" vr-mode-ui="enabled: false"> <!-- Rotate the scene to adjust for a flipped bottom image-->
-    <a-entity custom-cubemap="folder:media/interior/test/; transparent:true;"></a-entity>
+  <a-scene rotation="0 180 0" vr-mode-ui="enabled: false">
+    <a-entity custom-cubemap="folder:AIL13225_pavr;transparent:true;"></a-entity>
   </a-scene>
 </body>
 ```
