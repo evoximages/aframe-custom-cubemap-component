@@ -12,18 +12,17 @@ For [A-Frame](https://aframe.io).
     - [API fetched images](#api-fetched-images)
 ### API
 
-| Property     | Description                                                             | Default Value                                            | Options             |
-| ------------ | ----------------------------------------------------------------------- | -------------------------------------------------------- | ------------------- |
-| folder       | Path to local asset folder                                              | ' '                                                      |                     |
-| edgeLength   | Controls the dimensions of the skybox                                   | 500                                                      |                     |
-| ext          | The image extension                                                     | png                                                      | jpg / png           |
-| transparent  | Toggle transparency for png                                             | false                                                    | true / false        |
-| stereo       | Controls the layer on which the image is rendered.                      | both                                                     | both / left / right |
-| eye          | Fetch either left or right eye asset (*API use only)                    | \_L_                                                     | \_L_  / \_R_        |
-| vif          | Vehicle vifnum *API use only                                            | none                                                     |                     |
-| key          | API key **API use only                                                  | none                                                     |                     |
-| localSrcUrls | Local image naming scheme that maps to the skybox. **Order is important | `['1.png', '3.png', '4.png', '5.png', '0.png', '2.png']` |                     |
-| background   | Set as true if cubemap is used for background                           | false                                                    |
+| Property    | Description                                          | Default Value | Options             |
+| ----------- | ---------------------------------------------------- | ------------- | ------------------- |
+| folder      | Path to local asset folder                           | ' '           |                     |
+| edgeLength  | Controls the dimensions of the skybox                | 500           |                     |
+| ext         | The image extension                                  | png           | jpg / png           |
+| transparent | Toggle transparency for png                          | false         | true / false        |
+| stereo      | Controls the layer on which the image is rendered.   | both          | both / left / right |
+| eye         | Fetch either left or right eye asset (*API use only) | \_L_          | \_L_  / \_R_        |
+| vifnim      | Vehicle vifnum *API use only                         | none          |                     |
+| key         | API key **API use only                               | none          |                     |
+| background  | Set as true if cubemap is used for background        | false         |                     |
 
 ### Installation
 
@@ -62,8 +61,9 @@ Install and use by directly including the [browser files](dist):
 
 <body>
   <a-scene rotation="0 180 0" vr-mode-ui="enabled: false"> <!-- Rotate the scene to adjust for a flipped bottom image-->
-    <a-entity custom-cubemap="vif:12626; key:{client_api_key}; eye:_L_; transparent:true;"></a-entity>
+    <a-entity custom-cubemap="vifnum:12353;key:{api_key};transparent:true;"></a-entity>
   </a-scene>
+  
 </body>
 ```
 ![screen4](public/screen4.png)

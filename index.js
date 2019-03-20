@@ -43,7 +43,11 @@ AFRAME.registerComponent('custom-cubemap', {
       type: 'string',
       default: '_L_'
     },
-    vif: {
+    vifnum: {
+      type: 'string',
+      default: ''
+    },
+    key: {
       type: 'string',
       default: ''
     }
@@ -58,7 +62,14 @@ AFRAME.registerComponent('custom-cubemap', {
   update() {
     if (this.data.folder !== '') {
       cubemap = this.loadCubemapTexture(this.data.folder);
-      return this.createSkyBox(cubemap);
+      this.createSkyBox(cubemap);
+    }
+    if (this.data.key !== '') {
+      let response = this.fetchData(this.data.key);
+      response.then(data => {
+        cubemap = this.loadCubemapTexture('', this.formatFetchUrls(data));
+        this.createSkyBox(cubemap);
+      });
     }
   },
 
@@ -110,19 +121,23 @@ AFRAME.registerComponent('custom-cubemap', {
     }
   },
 
-  loadCubemapTexture(folderPath) {
+  loadCubemapTexture(folderPath, fetchedUrls) {
     const loader = new THREE.CubeTextureLoader();
     // url order matters for textureloader to place images on correct cube face
     const urls = ['1.png', '3.png', '4.png', '5.png', '0.png', '2.png'];
     const path = folderPath || '';
-    let formattedUrls = [];
 
     if (this.data.background) {
       return loader.setPath(path + '/').load(urls);
     }
 
-    const eye = this.data.eye;
-    formattedUrls = urls.map(url => `${folderPath}${eye}${url}`);
+    if (this.data.key) {
+      return loader.load(fetchedUrls);
+    }
+
+    const formattedUrls = urls.map(
+      url => `${folderPath}${this.data.eye}${url}`
+    );
     return loader.setPath(path + '/').load(formattedUrls);
   },
 
@@ -158,5 +173,44 @@ AFRAME.registerComponent('custom-cubemap', {
       'cubemap',
       new THREE.Mesh(skyBoxGeometry, skyBoxMaterial)
     );
+  },
+
+  formatFetchUrls(jsonData) {
+    let proxy = 'https://cors-anywhere.herokuapp.com/';
+
+    let filteredArray = jsonData.urls
+      .filter(url => RegExp(this.data.eye).test(url))
+      .sort();
+
+    // THREE.js loader array img order
+    let imgUrls = [
+      proxy + filteredArray[1], // right
+      proxy + filteredArray[3], // left
+      proxy + filteredArray[4], // top
+      proxy + filteredArray[5], // bottom
+      proxy + filteredArray[0], // front
+      proxy + filteredArray[2] // back
+    ];
+    return imgUrls;
+  },
+
+  async fetchData(key) {
+    let opt = {
+      eye: this.data.eye,
+      vifnum: this.data.vifnum,
+      apiKey: '?api_key=' + key,
+      product: '/products/14/134',
+      base:
+        'http://vehicles-api-dev.us-west-2.elasticbeanstalk.com/api/v1/vehicles/'
+    };
+
+    const fetchUrl =
+      opt.base + opt.vifnum + opt.product + opt.apiKey + '&eye=' + opt.eye;
+
+    return await fetch(fetchUrl)
+      .then(response => response.json())
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 });

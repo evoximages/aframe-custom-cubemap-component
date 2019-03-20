@@ -5,18 +5,21 @@
   <meta charset="utf-8">
   <title>A-Frame Custom Cubemap Component - Basic</title>
   <meta name="description" content="Basic example for Custom Cubemap component.">
-</meta>
+  </meta>
   <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
   <script src="../../dist/aframe-custom-cubemap-component.min.js"></script>
 </head>
 
 <body>
   <a-scene rotation="0 180 0" vr-mode-ui="enabled: false">
-    <a-entity custom-cubemap="folder:AIL13225_pavr;transparent:true;"></a-entity>
-    <a-entity custom-cubemap="folder:showroom_int;background:true"></a-entity> 
+    <!-- USING LOCAL ASSETS -->
+    <!-- <a-entity custom-cubemap="folder:AIL13225_pavr;transparent:true;vifnum:13225;"></a-entity> -->
+    <!-- USING API -->
+    <a-entity custom-cubemap="key:zJcNBTcQhTrD6HYbxdkay5APV837U8Cj;transparent:true;vifnum:12345;"></a-entity>
+    <a-entity custom-cubemap="folder:showroom_int;background:true;"></a-entity>
   </a-scene>
-  <a-camera fov="80" look-controls="enabled:true" wasd-controls="enabled:false">
-  </a-camera>
+    
+
   <style>
     .github-corner:hover .octo-arm {
       animation: octocat-wave 560ms ease-in-out
