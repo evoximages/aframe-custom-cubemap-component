@@ -1,60 +1,65 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame Custom Cubemap Component - Basic</title>
+    <meta
+      name="description"
+      content="Basic example for Custom Cubemap component."
+    />
 
-<head>
-  <meta charset="utf-8">
-  <title>A-Frame Custom Cubemap Component - Basic</title>
-  <meta name="description" content="Basic example for Custom Cubemap component.">
-  </meta>
-  <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
-  <script src="../../dist/aframe-custom-cubemap-component.min.js"></script>
-</head>
+    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+    <script src="../../dist/aframe-custom-cubemap-component.min.js"></script>
+  </head>
 
-<body>
-  <a-scene rotation="0 180 0" vr-mode-ui="enabled: false">
-    <!-- USING LOCAL ASSETS -->
-    <a-entity custom-cubemap="folder:./AIL13225_pavr/AIL13225_pavr;transparent:true;vifnum:13225;stereo:left;eye:_L_"></a-entity> 
-    <a-entity custom-cubemap="folder:./AIL13225_pavr/AIL13225_pavr;transparent:true;vifnum:13225;stereo:right;eye:_R_"></a-entity> 
-    <!-- USING API -->
-    <!-- <a-entity custom-cubemap="key:{api_key};transparent:true;vifnum:12345;"></a-entity> -->
-    <a-entity custom-cubemap="folder:showroom_int;background:true;"></a-entity>
-  </a-scene>
-    
+  <body>
+    <a-scene rotation="0 180 0" vr-mode-ui="enabled: false">
+      <!-- USING LOCAL ASSETS -->
+      <a-entity
+        custom-cubemap="folder:./AIL13225_pavr/AIL13225_pavr;transparent:true;vifnum:13225;stereo:left;eye:_L_"
+      ></a-entity>
+      <a-entity
+        custom-cubemap="folder:./AIL13225_pavr/AIL13225_pavr;transparent:true;vifnum:13225;stereo:right;eye:_R_"
+      ></a-entity>
+      <!-- USING API -->
+      <!-- <a-entity custom-cubemap="key:{api_key};transparent:true;vifnum:12345;"></a-entity> -->
+      <a-entity
+        custom-cubemap="folder:showroom_int;background:true;"
+      ></a-entity>
+    </a-scene>
 
-  <style>
-    .github-corner:hover .octo-arm {
-      animation: octocat-wave 560ms ease-in-out
-    }
-
-    @keyframes octocat-wave {
-
-      0%,
-      100% {
-        transform: rotate(0)
-      }
-
-      20%,
-      60% {
-        transform: rotate(-25deg)
-      }
-
-      40%,
-      80% {
-        transform: rotate(10deg)
-      }
-    }
-
-    @media (max-width:500px) {
+    <style>
       .github-corner:hover .octo-arm {
-        animation: none
+        animation: octocat-wave 560ms ease-in-out;
       }
 
-      .github-corner .octo-arm {
-        animation: octocat-wave 560ms ease-in-out
-      }
-    }
-  </style>
-  <!-- End GitHub Corner. -->
-</body>
+      @keyframes octocat-wave {
+        0%,
+        100% {
+          transform: rotate(0);
+        }
 
+        20%,
+        60% {
+          transform: rotate(-25deg);
+        }
+
+        40%,
+        80% {
+          transform: rotate(10deg);
+        }
+      }
+
+      @media (max-width: 500px) {
+        .github-corner:hover .octo-arm {
+          animation: none;
+        }
+
+        .github-corner .octo-arm {
+          animation: octocat-wave 560ms ease-in-out;
+        }
+      }
+    </style>
+    <!-- End GitHub Corner. -->
+  </body>
 </html>
