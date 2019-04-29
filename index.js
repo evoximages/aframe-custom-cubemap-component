@@ -64,6 +64,7 @@ AFRAME.registerComponent('custom-cubemap', {
       cubemap = this.loadCubemapTexture(this.data.folder);
       this.createSkyBox(cubemap);
     }
+
     if (this.data.key !== '') {
       let response = this.fetchData(this.data.key);
       response.then(data => {
@@ -71,6 +72,13 @@ AFRAME.registerComponent('custom-cubemap', {
         this.createSkyBox(cubemap);
       });
     }
+
+    if (!this.isMobile()) {
+      var scene = document.getElementsByTagName('a-scene');
+      if (!scene[0]) return;
+      scene[0].setAttribute('vr-mode-ui', { enabled: false });
+    }
+    this.setStereoLayer();
   },
 
   play() {
@@ -87,7 +95,8 @@ AFRAME.registerComponent('custom-cubemap', {
   },
 
   onExitVr() {
-    this.setStereoLayer('outVrMode');
+    // this.setStereoLayer('outVrMode');
+    window.location.reload(true);
   },
 
   addEventListeners() {
@@ -104,6 +113,21 @@ AFRAME.registerComponent('custom-cubemap', {
       canvasEl.removeEventListener('enter-vr', this.onEnterVr);
       canvasEl.removeEventListener('exit-vr', this.onExitVr);
     }
+  },
+
+  isMobile() {
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i) ||
+      navigator.userAgent.match(/iPod/i) ||
+      navigator.userAgent.match(/BlackBerry/i) ||
+      navigator.userAgent.match(/Windows Phone/i)
+    ) {
+      return true;
+    }
+    return false;
   },
 
   setStereoLayer(mode) {
