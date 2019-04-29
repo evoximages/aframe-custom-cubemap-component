@@ -138,7 +138,7 @@ AFRAME.registerComponent('custom-cubemap', {
     const formattedUrls = urls.map(
       url => `${folderPath}${this.data.eye}${url}`
     );
-    return loader.setPath(path + '/').load(formattedUrls);
+    return loader.load(formattedUrls);
   },
 
   createSkyBox(cubemap) {
