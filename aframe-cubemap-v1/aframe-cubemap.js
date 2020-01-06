@@ -117,38 +117,50 @@ AFRAME.registerComponent('custom-cubemap', {
   },
 
   createSkyBox(textures) {
-    const shader = THREE.ShaderLib.cube;
+    const shader = THREE.ShaderLib['cube'];
 
     // Create shader material
+    // const skyBoxMaterial = new THREE.RawShaderMaterial({
+    //   fragmentShader: shader.fragmentShader,
+    //   vertexShader: shader.vertexShader,
+    //   uniforms: shader.uniforms,
+    //   depthWrite: false,
+    //   side: THREE.BackSide,
+    //   transparent: this.data.transparent
+    // });
+
     const skyBoxMaterial = new THREE.ShaderMaterial({
       fragmentShader: shader.fragmentShader,
       vertexShader: shader.vertexShader,
       uniforms: shader.uniforms,
+      depthTest: false,
       depthWrite: false,
       side: THREE.BackSide,
       transparent: this.data.transparent
     });
 
-    // Object.defineProperty(skyBoxMaterial, 'envMap', {
-    //   get: function() {
-    //     return this.uniforms.envMap.value;
-    //   }
-    // });
+    Object.defineProperty(skyBoxMaterial, 'envMap', {
+      get: function() {
+        return this.uniforms.envMap.value;
+      }
+    });
+    // const mesh = new THREE.MeshBasicMaterial({ envMap: textures });
 
     // Apply cubemap textures to shader uniforms
-    skyBoxMaterial.uniforms.envMap.value = textures;
+    // skyBoxMaterial.uniforms.envMap.value = textures;
 
     // Clone ShaderMaterial (necessary for multiple cubemaps)
-    const skyBoxMaterialClone = skyBoxMaterial.clone();
+    // const skyBoxMaterialClone = skyBoxMaterial.clone();
+    const material = skyBoxMaterial.clone();
 
     // Set skybox dimensions
     const size = this.data.edgeLength;
     const skyBoxGeometry = new THREE.CubeGeometry(size, size, size);
 
-    const cubemap = new THREE.Mesh(skyBoxGeometry, skyBoxMaterialClone);
+    const cube = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
 
     // Set entity's object3D
-    this.el.setObject3D('cubemap', cubemap);
+    this.el.setObject3D('cubemap', cube);
     console.log(this.el.getObject3D('cubemap'));
   }
 });
