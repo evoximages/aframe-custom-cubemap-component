@@ -117,31 +117,29 @@ AFRAME.registerComponent('custom-cubemap', {
   },
 
   createSkyBox(textures) {
-    const shader = THREE.ShaderLib['cube'];
+    const shader = THREE.ShaderLib.cube;
 
     // Create shader material
     const skyBoxMaterial = new THREE.ShaderMaterial({
       fragmentShader: shader.fragmentShader,
       vertexShader: shader.vertexShader,
       uniforms: shader.uniforms,
-      // depthWrite: false,
-      depthTest: false,
+      depthWrite: false,
       side: THREE.BackSide,
       transparent: this.data.transparent
     });
 
-    Object.defineProperty(skyBoxMaterial, 'envMap', {
-      get: function() {
-        return this.uniforms.envMap.value;
-      }
-    });
+    // Object.defineProperty(skyBoxMaterial, 'envMap', {
+    //   get: function() {
+    //     return this.uniforms.envMap.value;
+    //   }
+    // });
+
+    // Apply cubemap textures to shader uniforms
+    skyBoxMaterial.uniforms.envMap.value = textures;
 
     // Clone ShaderMaterial (necessary for multiple cubemaps)
     const skyBoxMaterialClone = skyBoxMaterial.clone();
-
-    // Apply cubemap textures to shader uniforms
-    skyBoxMaterialClone.uniforms.envMap.value = textures;
-    // shader.uniforms['tCube'].value = textures;
 
     // Set skybox dimensions
     const size = this.data.edgeLength;
@@ -151,6 +149,6 @@ AFRAME.registerComponent('custom-cubemap', {
 
     // Set entity's object3D
     this.el.setObject3D('cubemap', cubemap);
-    console.log(this.el.getObject3D('cubemap')['material']);
+    console.log(this.el.getObject3D('cubemap'));
   }
 });
