@@ -1,5 +1,5 @@
 import { SceneManager } from './SceneManager.js';
-import { renderPano } from '../lib/components/pano/renderPano.js';
+import { Pano } from './components/pano/Pano.js';
 
 let canvas, sceneManager, container;
 
@@ -32,8 +32,8 @@ function resizeCanvas() {
   sceneManager.onWindowResize();
 }
 
-function renderComponent(type, sceneManager) {
-  renderPano(sceneManager);
+function renderComponent(type) {
+  Pano(sceneManager);
   sceneManager.updateControls(type);
 }
 
