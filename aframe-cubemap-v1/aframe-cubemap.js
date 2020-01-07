@@ -93,7 +93,7 @@ AFRAME.registerComponent('custom-cubemap', {
 
   loadCubemapTexture(folderPath) {
     const loader = new THREE.CubeTextureLoader();
-
+    let textureCube;
     // url order matters for textureloader to place images on correct cube face
     const ext = this.data.ext;
     const urls = [
@@ -107,37 +107,32 @@ AFRAME.registerComponent('custom-cubemap', {
     const path = folderPath || '';
 
     if (this.data.background) {
-      return loader.setPath(path + '/').load(urls);
+      textureCube = loader.setPath(path + '/').load(urls);
+    } else {
+      const formattedUrls = urls.map(
+        url => `${folderPath}${this.data.eye}${url}`
+      );
+      textureCube = loader.setPath(path + '/').load(formattedUrls);
     }
-
-    const formattedUrls = urls.map(
-      url => `${folderPath}${this.data.eye}${url}`
-    );
-    return loader.setPath(path + '/').load(formattedUrls);
+    textureCube.format = THREE.formatRGBA;
+    return textureCube;
   },
 
   createSkyBox(textures) {
     const shader = THREE.ShaderLib['cube'];
 
     // Create shader material
-    // const skyBoxMaterial = new THREE.RawShaderMaterial({
-    //   fragmentShader: shader.fragmentShader,
-    //   vertexShader: shader.vertexShader,
-    //   uniforms: shader.uniforms,
-    //   depthWrite: false,
-    //   side: THREE.BackSide,
-    //   transparent: this.data.transparent
-    // });
-
     const skyBoxMaterial = new THREE.ShaderMaterial({
       fragmentShader: shader.fragmentShader,
       vertexShader: shader.vertexShader,
       uniforms: shader.uniforms,
-      depthTest: false,
       depthWrite: false,
       side: THREE.BackSide,
       transparent: this.data.transparent
     });
+
+    // Apply cubemap textures to shader uniforms
+    skyBoxMaterial.uniforms['envMap'].value = textures;
 
     Object.defineProperty(skyBoxMaterial, 'envMap', {
       get: function() {
@@ -146,18 +141,14 @@ AFRAME.registerComponent('custom-cubemap', {
     });
     // const mesh = new THREE.MeshBasicMaterial({ envMap: textures });
 
-    // Apply cubemap textures to shader uniforms
-    // skyBoxMaterial.uniforms.envMap.value = textures;
-
     // Clone ShaderMaterial (necessary for multiple cubemaps)
-    // const skyBoxMaterialClone = skyBoxMaterial.clone();
     const material = skyBoxMaterial.clone();
 
     // Set skybox dimensions
-    const size = this.data.edgeLength;
-    const skyBoxGeometry = new THREE.CubeGeometry(size, size, size);
+    const size = 500;
+    const geometry = new THREE.BoxGeometry(size, size, size);
 
-    const cube = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
+    const cube = new THREE.Mesh(geometry, material);
 
     // Set entity's object3D
     this.el.setObject3D('cubemap', cube);
