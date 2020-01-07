@@ -1,13 +1,3 @@
-/* global AFRAME, THREE */
-if (typeof AFRAME === 'undefined') {
-  throw new Error(
-    'Component attempted to register before AFRAME was available.'
-  );
-}
-
-/**
- * Custom Cubemap component for A-Frame.
- */
 AFRAME.registerComponent('custom-cubemap', {
   multiple: true,
   schema: {
@@ -53,13 +43,13 @@ AFRAME.registerComponent('custom-cubemap', {
     }
   },
 
-  init() {
+  init: function() {
     this.onEnterVr = this.onEnterVr.bind(this);
     this.onExitVr = this.onExitVr.bind(this);
     this.setStereoLayer = this.setStereoLayer.bind(this);
   },
 
-  update() {
+  update: function() {
     if (this.data.folder !== '') {
       cubemap = this.loadCubemapTexture(this.data.folder);
       this.createSkyBox(cubemap);
@@ -81,25 +71,25 @@ AFRAME.registerComponent('custom-cubemap', {
     this.setStereoLayer();
   },
 
-  play() {
+  play: function() {
     this.addEventListeners();
   },
 
-  remove() {
+  remove: function() {
     this.removeEventListeners();
     this.el.removeObject3D('cubemap');
   },
 
-  onEnterVr() {
+  onEnterVr: function() {
     this.setStereoLayer('inVrMode');
   },
 
-  onExitVr() {
+  onExitVr: function() {
     // this.setStereoLayer('outVrMode');
     window.location.reload(true);
   },
 
-  addEventListeners() {
+  addEventListeners: function() {
     const canvasEl = document.querySelector('a-scene');
     if (canvasEl) {
       canvasEl.addEventListener('enter-vr', this.onEnterVr, false);
@@ -107,7 +97,7 @@ AFRAME.registerComponent('custom-cubemap', {
     }
   },
 
-  removeEventListeners() {
+  removeEventListeners: function() {
     const canvasEl = document.querySelector('a-scene');
     if (canvasEl) {
       canvasEl.removeEventListener('enter-vr', this.onEnterVr);
@@ -115,7 +105,7 @@ AFRAME.registerComponent('custom-cubemap', {
     }
   },
 
-  isMobile() {
+  isMobile: function() {
     if (
       navigator.userAgent.match(/Android/i) ||
       navigator.userAgent.match(/webOS/i) ||
@@ -130,7 +120,7 @@ AFRAME.registerComponent('custom-cubemap', {
     return false;
   },
 
-  setStereoLayer(mode) {
+  setStereoLayer: function(mode) {
     const data = this.data;
     const obj3D = this.el.object3D.children[0];
 
@@ -145,7 +135,7 @@ AFRAME.registerComponent('custom-cubemap', {
     }
   },
 
-  loadCubemapTexture(folderPath, fetchedUrls) {
+  loadCubemapTexture: function(folderPath, fetchedUrls) {
     const loader = new THREE.CubeTextureLoader();
     // url order matters for textureloader to place images on correct cube face
     const urls = ['1.png', '3.png', '4.png', '5.png', '0.png', '2.png'];
@@ -165,7 +155,7 @@ AFRAME.registerComponent('custom-cubemap', {
     return loader.load(formattedUrls);
   },
 
-  createSkyBox(cubemap) {
+  createSkyBox: function(cubemap) {
     const shader = THREE.ShaderLib.cube;
 
     // Create shader material
@@ -199,7 +189,7 @@ AFRAME.registerComponent('custom-cubemap', {
     );
   },
 
-  formatFetchUrls(jsonData) {
+  formatFetchUrls: function(jsonData) {
     let proxy = 'https://cors-anywhere.herokuapp.com/';
 
     let filteredArray = jsonData.urls

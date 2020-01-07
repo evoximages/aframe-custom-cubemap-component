@@ -1,7 +1,6 @@
 import { SceneManager } from './SceneManager.js';
 import { renderPano } from '../lib/components/pano/renderPano.js';
-import { renderCar } from '../lib/components/pano/renderCar.js';
-import { config } from '../../config.js';
+
 let canvas, sceneManager, container;
 
 init();
@@ -34,8 +33,7 @@ function resizeCanvas() {
 }
 
 function renderComponent(type, sceneManager) {
-  // renderPano(type, sceneManager);
-  renderCar(config, sceneManager);
+  renderPano(sceneManager);
   sceneManager.updateControls(type);
 }
 

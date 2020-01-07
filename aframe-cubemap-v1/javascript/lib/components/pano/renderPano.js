@@ -1,24 +1,23 @@
 import { Cubemap } from './Cubemap.js';
 import { config } from '../../../../config.js';
 
-function renderPano(type, sceneManager) {
-  const { showroomInt, sides, ext } = config;
+function renderPano(sceneManager) {
+  const showroomTextures = config['sides'].map(side => buildShowroomUrls(side));
+  const carTextures = config['sides'].map(side => buildCarUrls(side));
 
-  let urls = config['sides'].map(side => buildTextureUrl(config, side));
-  let scene = sceneManager.getScene();
-
-  sceneManager.addEntityToScene(new Cubemap(scene, urls));
+  const scene = sceneManager.getScene();
+  sceneManager.addEntityToScene(new Cubemap(scene, carTextures));
+  // sceneManager.addEntityToScene(new Cubemap(scene, showroomTextures));
 }
 
-function buildTextureUrl(config, i) {
-  let { showroomInt, ext } = config;
+function buildShowroomUrls(i) {
+  const { showroomInt, ext } = config;
   return `${showroomInt}${i}${ext}`;
 }
 
-function buildPanoUrl(data, i) {
-  const { vifnum, year } = data;
-
-  return `${cloudFrontUrl}interior_vr_gear/MY${year}/AIL${vifnum}_2048/Interior/AIL${vifnum}_pavr/AIL${vifnum}_pavr_L_${i}.png`;
+function buildCarUrls(i) {
+  const { path, eye, ext } = config;
+  return `${path}${eye}${i}${ext}`;
 }
 
 export { renderPano };

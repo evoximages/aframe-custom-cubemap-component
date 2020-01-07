@@ -6,7 +6,7 @@
   "unpkg": "dist/aframe-custom-cubemap-component.min.js",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "budo index.js:dist/aframe-custom-cubemap-component.min.js --port 7000 --live --open",
+    "dev": "budo index.js:index.js --port 7000 --live --open",
     "dist": "npm run build && uglifyjs dist/aframe-custom-cubemap-component.js > dist/aframe-custom-cubemap-component.min.js",
     "lint": "semistandard -v | snazzy",
     "prepublish": "npm run dist",

@@ -10,7 +10,7 @@ function SceneManager(canvas) {
   const renderer = buildRenderer(screenDimensions);
   const camera = buildCamera(screenDimensions);
   const sceneEntities = createSceneEntities(scene);
-  let controls = buildControls(camera, canvas);
+  const controls = buildControls(camera, canvas);
 
   function buildScene() {
     const scene = new THREE.Scene();
