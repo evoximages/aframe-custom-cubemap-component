@@ -1,5 +1,5 @@
 import { SceneManager } from './SceneManager.js';
-import { Pano } from './components/pano/Pano.js';
+import { Pano } from './components/Pano.js';
 
 let canvas, sceneManager, container;
 
