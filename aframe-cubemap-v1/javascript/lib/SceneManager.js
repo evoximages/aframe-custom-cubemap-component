@@ -2,8 +2,8 @@ function SceneManager(canvas) {
   const clock = new THREE.Clock();
 
   const screenDimensions = {
-    width: window.width,
-    height: window.height
+    width: canvas.width,
+    height: canvas.height
   };
 
   const scene = buildScene();
